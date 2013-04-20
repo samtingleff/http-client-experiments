@@ -25,6 +25,17 @@ typedef struct
 
 typedef struct
 {
+	size_t len;
+	http_header headers[];
+} http_header_list;
+
+typedef struct
+{
+	size_t len;
+} http_client_request_list;
+
+typedef struct
+{
 	// unique identifier for this request object
 	// provided back to the caller in http_client_response
 	int request_id;
@@ -39,7 +50,7 @@ typedef struct
 	bytestring request_body;
 
 	// request headers, if any
-	http_header headers[];
+	http_header_list headers;
 } http_client_request;
 
 typedef struct
@@ -48,7 +59,7 @@ typedef struct
 	int timeout;
 
 	// list of requests
-	http_client_request requests[];
+	http_client_request_list requests;
 } http_client_multirequest;
 
 typedef struct
@@ -61,6 +72,9 @@ typedef struct
 	// see ERRORS_DNS, etc defined above
 	int request_status;
 
+	// response time in milliseconds for this request
+	int response_time;
+
 	// http status code returned
 	int http_response_code;
 
@@ -68,8 +82,14 @@ typedef struct
 	bytestring request_body;
 
 	// response headers
-	http_header headers[];
+	http_header_list headers;
 } http_client_response;
+
+typedef struct
+{
+	size_t len;
+	http_client_response responses[];
+} http_client_response_list;
 
 typedef struct
 {
@@ -77,7 +97,7 @@ typedef struct
 	int response_time;
 
 	// all responses
-	http_client_response responses[];
+	http_client_response_list responses;
 } http_client_multiresponse;
 
 /**
