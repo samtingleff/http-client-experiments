@@ -96,7 +96,7 @@ public class RPAsyncHttpClientImpl implements RPAsyncHttpClient {
 				.setMaximumConnectionsPerHost(maxConnectionsPerHost)
 				.setMaximumConnectionsTotal(maxTotalConnections)
 				.setFollowRedirects(false).setExecutorService(threadPool)
-				.setUserAgent("be2/1.0").setIdleConnectionInPoolTimeoutInMs(
+				.setUserAgent("rubicon-http-client/1.0").setIdleConnectionInPoolTimeoutInMs(
 						1000 * 60).build();
 		client = new AsyncHttpClient(this.config);
 	}
@@ -113,8 +113,7 @@ public class RPAsyncHttpClientImpl implements RPAsyncHttpClient {
 
 		Handler<T> h = new Handler<T>(request.getContext(),
 				System.currentTimeMillis(),
-				handler,
-				request.isDebug());
+				handler);
 		BoundRequestBuilder builder = getBuilder(client, request);
 
 		List<NameValuePair> headers = request.getHeaders();
@@ -241,18 +240,14 @@ public class RPAsyncHttpClientImpl implements RPAsyncHttpClient {
 
 		private RPAsyncCompletionHandler<T> delegate;
 
-		private boolean debug;
-
 		private long start;
 
 		public Handler(T context,
 				long start,
-				RPAsyncCompletionHandler<T> delegate,
-				boolean debug) {
+				RPAsyncCompletionHandler<T> delegate) {
 			this.context = context;
 			this.delegate = delegate;
 			this.start = start;
-			this.debug = debug;
 		}
 
 		@Override

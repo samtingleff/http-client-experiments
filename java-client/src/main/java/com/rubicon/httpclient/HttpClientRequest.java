@@ -21,8 +21,6 @@ public class HttpClientRequest<T> {
 
 	private int timeout;
 
-	private boolean debug;
-
 	public HttpClientRequest(T context,
 			HttpClientMethod method,
 			String url,
@@ -31,18 +29,6 @@ public class HttpClientRequest<T> {
 			List<NameValuePair> parameters,
             byte[] body,
             int timeout) {
-		this(context, method, url, address, headers, parameters, body, timeout, false);
-	}
-
-	public HttpClientRequest(T context,
-			HttpClientMethod method,
-			String url,
-			InetAddress address,
-			List<NameValuePair> headers,
-			List<NameValuePair> parameters,
-            byte[] body,
-            int timeout,
-            boolean debug) {
 		this.context = context;
 		this.method = method;
 		this.url = url;
@@ -51,7 +37,6 @@ public class HttpClientRequest<T> {
 		this.parameters = parameters;
 		this.body = body;
 		this.timeout = timeout;
-		this.debug = debug;
 	}
 
 	public T getContext() {
@@ -84,9 +69,5 @@ public class HttpClientRequest<T> {
 
 	public int getTimeout() {
 		return timeout;
-	}
-
-	public boolean isDebug() {
-		return debug;
 	}
 }
