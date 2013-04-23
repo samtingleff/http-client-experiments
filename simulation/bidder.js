@@ -1,22 +1,38 @@
 
-var util = require('util'),
-    http = require('http');
+var util = require("util"),
+    http = require("http");
 
 var createServer = function(port) {
   http.createServer(function(req, res) {
-    // sleep for a random time between 40 and 150 ms
-    var sleepTime = (Math.random() * (150 - 40)) + 40;
+    // read the complete request body
+    var body = new Array();
+    req.addListener("data", function(chunk) {
+      body.push(chunk);
+    }); 
+    req.addListener("end", function() {
+      var input = body.join("");
 
-    var response = {
-      status : 10,
-      hello : "world"
-    };
-    var responseBody = JSON.stringify(response);
-    setTimeout(function() {
-      res.writeHead(200, {'Content-Type':'application/json', 'Content-Length':responseBody.length});
-      res.write(responseBody);
-      res.end();
-    }, sleepTime);
+      if (!input == "{ \"post\": \"body\" \"goes\": \"here\" }") {
+          var responseBody = "invalid input";
+          res.writeHead(400, {"Content-Type":"text/plain", "Content-Length":responseBody.length});
+          res.write(responseBody);
+          res.end();
+      } else {
+        // sleep for a random time between 40 and 150 ms
+        var sleepTime = (Math.random() * (150 - 40)) + 40;
+
+        var response = {
+          status : 10,
+          hello : "world"
+        };
+        var responseBody = JSON.stringify(response);
+        setTimeout(function() {
+          res.writeHead(200, {"Content-Type":"application/json", "Content-Length":responseBody.length});
+          res.write(responseBody);
+          res.end();
+        }, sleepTime);
+      }
+    });
   }).listen(port);
 };
 
