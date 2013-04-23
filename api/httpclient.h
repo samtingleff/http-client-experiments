@@ -31,11 +31,6 @@ typedef struct
 
 typedef struct
 {
-	size_t len;
-} http_client_request_list;
-
-typedef struct
-{
 	// unique identifier for this request object
 	// provided back to the caller in http_client_response
 	int request_id;
@@ -52,6 +47,12 @@ typedef struct
 	// request headers, if any
 	http_header_list headers;
 } http_client_request;
+
+typedef struct
+{
+	size_t len;
+	http_client_request requests[];
+} http_client_request_list;
 
 typedef struct
 {
